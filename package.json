@@ -1,0 +1,19 @@
+{
+  "name": "gitmail-core",
+  "version": "0.0.1",
+  "description": "Email Github projects in node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitmailio/gitmail-core.git"
+  },
+  "author": "Tom Quirk <tom@gitmail.io>",
+  "license": "LGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/gitmailio/gitmail-core/issues"
+  },
+  "homepage": "https://github.com/gitmailio/gitmail-core#readme"
+}
