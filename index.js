@@ -15,6 +15,7 @@ module.exports = octokit => {
           users = users.concat(res.data);
           if (res.data.length < DEFAULT_PER_PAGE || page === pageLimit)
             return users;
+
           return _request(users, page + 1);
         });
     };
@@ -34,8 +35,10 @@ module.exports = octokit => {
         .then(res => {
           if (!res) return users;
           users = users.concat(res.data);
-          if ((res.data.length < DEFAULT_PER_PAGE, page === pageLimit))
+
+          if (res.data.length < DEFAULT_PER_PAGE || page === pageLimit)
             return users;
+
           return _request(users, page + 1);
         });
     };
@@ -47,22 +50,27 @@ module.exports = octokit => {
     return Promise.all([
       listStargazersForRepo(owner, repo),
       listWatchersForRepo(owner, repo)
-    ]).then(([stargazers, watchers]) => {
-      const users = stargazers;
-      watchers.forEach(user => {
-        if (!users.some(u => u.login === user.login)) users.push(user);
-      });
-
-      return Promise.all(
-        users
-          .filter(user => user.login)
-          .map(user => {
-            return octokit.users
-              .getByUsername({ username: user.login })
-              .then(res => res.data);
+    ])
+      .then(([stargazers, watchers]) => {
+        const users = stargazers.concat(
+          watchers.filter(user => {
+            !stargazers.some(u => u.login === user.login);
           })
-      );
-    });
+        );
+
+        return Promise.all(
+          users
+            .filter(user => user.login)
+            .map(user => {
+              return octokit.users
+                .getByUsername({ username: user.login })
+                .then(res => res.data);
+            })
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return {
