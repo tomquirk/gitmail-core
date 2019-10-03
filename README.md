@@ -1,6 +1,6 @@
 # gitmail-core
 
-Core for [Gitmail](https://gitmail.io)
+Core for [gitmail.io](https://gitmail.io)
 
 ## Usage
 
